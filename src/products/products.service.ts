@@ -42,31 +42,29 @@ export class ProductsService {
     return this.products;
   }
 
-  getWithCost(cost: number): IExpenses[] | IExpenses {
-    const expense = this.products.filter((el) => el.cost >= cost);
-
-    if (cost) {
-      return expense;
+  getWithBothQuery(
+    category: string,
+    cost: number,
+    key: string,
+  ): IExpenses[] | IExpenses {
+    if (key !== '999') {
+      throw new HttpException('Permission Denied', HttpStatus.UNAUTHORIZED);
     }
+    if (category && !cost) {
+      const newCategory = this.products.filter(
+        (el) => el.category === category,
+      );
 
-    return this.products;
-  }
+      return newCategory;
+    } else if (cost && !category) {
+      const newCost = this.products.filter((el) => el.cost >= cost);
 
-  getWithCategory(category: string): IExpenses[] | IExpenses {
-    const expense = this.products.filter((el) => el.category === category);
-
-    if (category) {
-      return expense;
-    }
-
-    return this.products;
-  }
-
-  getWithBothQuery(category: string, cost: number): IExpenses[] | IExpenses {
-    if (category && cost) {
-      return this.products.filter(
+      return newCost;
+    } else if (cost && category) {
+      const Both = this.products.filter(
         (el) => el.category === category && el.cost >= cost,
       );
+      return Both;
     }
 
     return this.products;

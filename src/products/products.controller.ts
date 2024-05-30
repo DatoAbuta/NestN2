@@ -8,6 +8,7 @@ import {
   Put,
   ParseIntPipe,
   Query,
+  Headers,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductDTO } from './products.dto';
@@ -16,28 +17,19 @@ import { ProductDTO } from './products.dto';
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
-  // ამას იმიტომ ვაკომენტარებ რომ იმუშაოს getWithQuery ფუნქციამ.
+  // ამას იმიტომ ვაკომენტარებ რომ იმუშაოს getWithBothQuery ფუნქციამ.
   // @Get()
   // getAll() {
   //   return this.productsService.getAll();
-  // }
-
-  // @Get() ამას ვაკომენტარებ იმიტორო ისე getWithCategory არ მუშაობს.
-  // getWithCost(@Query('cost') cost) {
-  //   return this.productsService.getWithCost(cost);
-  // }
-
-  // @Get() ამასაც ვაკომენტარებ რომ მესამე ფუნქციამ იმუშაოს.
-  // getWithCategory(@Query('category') category) {
-  //   return this.productsService.getWithCategory(category);
   // }
 
   @Get()
   getWithBothQuery(
     @Query('category') category: string,
     @Query('cost', ParseIntPipe) cost: number,
+    @Headers('x-api-key') key: string,
   ) {
-    return this.productsService.getWithBothQuery(category, cost);
+    return this.productsService.getWithBothQuery(category, cost, key);
   }
 
   @Get('/:id')
