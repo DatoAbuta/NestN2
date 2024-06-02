@@ -33,8 +33,8 @@ export class ProductsController {
   }
 
   @Get('/:id')
-  getExpenseById(@Param('id') id) {
-    return this.productsService.getExpenseById(Number(id));
+  getExpenseById(@Param('id', ParseIntPipe) id) {
+    return this.productsService.getExpenseById(id);
   }
 
   @Post()
@@ -43,12 +43,15 @@ export class ProductsController {
   }
 
   @Delete('/:id')
-  deleteProduct(@Param('id') id) {
-    return this.productsService.deleteProduct(Number(id));
+  deleteProduct(@Param('id', ParseIntPipe) id) {
+    return this.productsService.deleteProduct(id);
   }
 
   @Put('/:id')
-  updateProduct(@Param('id') id: number, @Body() product: ProductDTO) {
-    return this.productsService.updateProduct(Number(id), product);
+  updateProduct(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() product: ProductDTO,
+  ) {
+    return this.productsService.updateProduct(id, product);
   }
 }
